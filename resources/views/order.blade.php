@@ -10,9 +10,9 @@
                                 <h4 class="card-title">Orders</h4>
                                 <ul class="nav nav-pills mt-4 mb-1">
                                     <li class=" nav-item"> <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">New Orders</a> </li>
-                                    <li class="nav-item"> <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false">Accepted Orders</a> </li>
-                                    <li class="nav-item"> <a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true">Completed Orders</a> </li>
-                                     <li class="nav-item"> <a href="#navpills-4" class="nav-link" data-toggle="tab" aria-expanded="true">Rejected Orders</a> </li>
+                                    <li class="nav-item"> <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" onclick="GetAcceptedOrder()">Accepted Orders</a> </li>
+                                    <li class="nav-item"> <a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true" onclick="GetCompletedOrder()">Completed Orders</a> </li>
+                                     <li class="nav-item"> <a href="#navpills-4" class="nav-link" data-toggle="tab" aria-expanded="true" onclick="GetRejectedOrder()">Rejected Orders</a> </li>
                                 </ul>
                                 <div class="tab-content border p-4" style="min-height: 320px;">
                                     <div id="navpills-1" class="tab-pane active">
@@ -45,6 +45,9 @@
                 </div>
               </div>
               <br>
+
+              <div id="newOrdersDiv">
+                
             @if(count($orders) == 0)
             <br>
               <center><h6>No New Order Found!</h6></center>
@@ -59,8 +62,8 @@
                  <span style="float: left;"> Order Number: {{$key['order_number']}}</span>
 
 
-                 <button class="btn btn-danger"  style="float: right; height: 40px; padding: 10px;" onclick='RejectOrder("{{$key['id']}}") ; RefreshOrderList()'> Reject</button >
-                 <button class="btn btn-info"  style="float: right; margin-right:10px; height: 40px; padding: 10px;" onclick='AcceptOrder("{{$key['id']}}") ; RefreshOrderList()'> Accept</button >
+                 <button class="btn btn-danger"  style="float: right; height: 40px; padding: 10px;" onclick='RejectOrder("{{$key['id']}}")'> Reject</button >
+                 <button class="btn btn-info"  style="float: right; margin-right:10px; height: 40px; padding: 10px;" onclick='AcceptOrder("{{$key['id']}}")'> Accept</button >
                
                 </div>
                 <div id="order_details_div{{$key['id']}}" class="card-body">
@@ -149,6 +152,7 @@
               @endforeach
               @endif
 
+              </div>
 
 
 
@@ -195,7 +199,9 @@
 
                                     </div>
                                     <div id="navpills-2" class="tab-pane">
-                                       
+                                        
+                                        
+
                                     </div>
                                     <div id="navpills-3" class="tab-pane">
                                         
@@ -215,3 +221,140 @@
 
 @endsection
     
+<script type="text/javascript">
+  
+    function RefreshOrderList()
+    {
+
+            $.ajax({
+            type: "GET",
+            url: "{{ config('app.url')}}get-new-order",
+            beforeSend: function(){
+            
+                  $('#newOrdersDiv').html('<center><div class="spinner-grow text-dark" role="status"><span class="sr-only">Loading...</span></div></center>');
+                  
+            },
+            success: function(data) {
+                  $('#newOrdersDiv').html(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Exception:' + errorThrown);
+            }
+          });
+       
+    }
+
+    function AcceptOrder(id)
+    {
+      $.ajax({
+            type: "GET",
+            url: "{{ config('app.url')}}accept-order/"+id,
+            beforeSend: function(){
+            
+                  document.getElementById('Order'+id).style.display="none";
+                  
+            },
+            success: function(data) {
+                
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Exception:' + errorThrown);
+            }
+          });
+    }
+  
+    function RejectOrder(id)
+    {
+      $.ajax({
+            type: "GET",
+            url: "{{ config('app.url')}}reject-order/"+id,
+            beforeSend: function(){
+            
+                  document.getElementById('Order'+id).style.display="none";
+                  
+            },
+            success: function(data) {
+                 
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Exception:' + errorThrown);
+            }
+          });
+    }
+
+    function CompleteOrder(id)
+    {
+      $.ajax({
+            type: "GET",
+            url: "{{ config('app.url')}}complete-order/"+id,
+            beforeSend: function(){
+            
+                  document.getElementById('Order'+id).style.display="none";
+                  
+            },
+            success: function(data) {
+                 
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Exception:' + errorThrown);
+            }
+          });
+    }
+    
+    function GetAcceptedOrder()
+    {
+      $.ajax({
+                  type: "GET",
+                  url: "{{ config('app.url')}}get-accepted-order",
+                  beforeSend: function(){
+                  
+                        $('#navpills-2').html('<center><div class="spinner-grow text-dark" role="status"><span class="sr-only">Loading...</span></div></center>');
+                        
+                  },
+                  success: function(data) {
+                       $('#navpills-2').html(data);
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                      alert('Exception:' + errorThrown);
+                  }
+                });
+    }
+    
+    function GetCompletedOrder()
+    {
+      $.ajax({
+                  type: "GET",
+                  url: "{{ config('app.url')}}get-completed-order",
+                  beforeSend: function(){
+                  
+                        $('#navpills-3').html('<center><div class="spinner-grow text-dark" role="status"><span class="sr-only">Loading...</span></div></center>');
+                        
+                  },
+                  success: function(data) {
+                       $('#navpills-3').html(data);
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                      alert('Exception:' + errorThrown);
+                  }
+                });
+    } 
+    function GetRejectedOrder()
+    {
+      $.ajax({
+                  type: "GET",
+                  url: "{{ config('app.url')}}get-rejected-order",
+                  beforeSend: function(){
+                  
+                        $('#navpills-4').html('<center><div class="spinner-grow text-dark" role="status"><span class="sr-only">Loading...</span></div></center>');
+                        
+                  },
+                  success: function(data) {
+                       $('#navpills-4').html(data);
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                      alert('Exception:' + errorThrown);
+                  }
+                });
+    }
+
+</script>

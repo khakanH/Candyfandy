@@ -53,4 +53,19 @@ Route::get('delete-product/{id}',[InventoryController::class, 'DeleteProduct'])-
 
 
 Route::get('order',[OrderController::class, 'Index'])->name('order');
+Route::get('get-new-order',[OrderController::class, 'NewOrders'])->name('get-new-order');
+Route::get('accept-order/{id}',[OrderController::class, 'AcceptOrder'])->name('accept-order');
+Route::get('reject-order/{id}',[OrderController::class, 'RejectOrder'])->name('reject-order');
+Route::get('complete-order/{id}',[OrderController::class, 'CompleteOrder'])->name('complete-order');
+
+Route::get('get-accepted-order',[OrderController::class, 'AcceptedOrderList'])->name('get-accepted-order');
+Route::get('get-completed-order',[OrderController::class, 'CompletedOrderList'])->name('get-completed-order');
+Route::get('get-rejected-order',[OrderController::class, 'RejectedOrderList'])->name('get-rejected-order');
+
+
+
+
+
+
+
 Route::get('sale',[SaleController::class, 'Index'])->name('sale');
