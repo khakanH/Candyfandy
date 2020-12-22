@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,8 @@ Route::get('accept-order/{id}',[OrderController::class, 'AcceptOrder'])->name('a
 Route::get('reject-order/{id}',[OrderController::class, 'RejectOrder'])->name('reject-order');
 Route::get('complete-order/{id}',[OrderController::class, 'CompleteOrder'])->name('complete-order');
 
+Route::get('search-order/{val}',[OrderController::class, 'SearchOrder'])->name('search-order');
+
 Route::get('get-accepted-order',[OrderController::class, 'AcceptedOrderList'])->name('get-accepted-order');
 Route::get('get-completed-order',[OrderController::class, 'CompletedOrderList'])->name('get-completed-order');
 Route::get('get-rejected-order',[OrderController::class, 'RejectedOrderList'])->name('get-rejected-order');
@@ -69,3 +72,14 @@ Route::get('get-rejected-order',[OrderController::class, 'RejectedOrderList'])->
 
 
 Route::get('sale',[SaleController::class, 'Index'])->name('sale');
+
+
+Route::get('user',[UserController::class, 'Index'])->name('user');
+Route::post('add-update-user',[UserController::class, 'AddUpdateUser'])->name('add-update-user');
+Route::get('get-user-type-name-list/{type}',[UserController::class, 'UserTypeNameList'])->name('get-user-type-name-list');
+
+
+Route::get('user-type',[UserController::class, 'UserType'])->name('user-type');
+Route::get('delete-user-type/{id}',[UserController::class, 'DeleteUserType'])->name('delete-user-type');
+Route::post('add-update-user-type',[UserController::class, 'AddUpdateUserType'])->name('add-update-user-type');
+Route::get('get-user-type-list-AJAX',[UserController::class, 'UserTypeListAJAX'])->name('get-user-type-list-AJAX');

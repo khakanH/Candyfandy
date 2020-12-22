@@ -41,7 +41,7 @@
                         </li>
 
                          <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark" href="{{route('user')}}" aria-expanded="false">
                                 <i class="mr-2 mdi mdi-account-multiple-plus"></i>
                                 <span class="hide-menu"> Users</span> 
                             </a>

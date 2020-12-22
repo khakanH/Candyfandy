@@ -149,6 +149,134 @@
 <!-- ----------------------------------------------------------------------------------------------------- -->
 
 
+
+
+
+
+
+
+
+
+
+
+<!-- User Type Modal                                         -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+<div id="UserTypeModal" class="modal fade show " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-modal="true" aria-hidden="true" style="color: black;">
+    <div class="modal-dialog" id="UserTypeModalDialog">
+        <div class="modal-content" id="UserTypeModalContent">
+           
+            <form name="userTypeForm" enctype="multipart/form-data" id="userTypeForm">
+              @csrf
+               <span class='arrow'>
+              <label class='error'></label>
+              </span>
+                  <div class="modal-header">
+                      <h4 class="modal-title" id="UserTypeModalLabel"></h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="" id="UserTypeModalData">
+
+                      <input type="hidden" id="user_type_id" name="user_type_id">
+
+
+                        
+                        <div class="form-group">
+                          <input type="text" id="user_type_name" name="user_type_name" class="form-control" placeholder="Enter User Type Name">
+                        </div>
+                                
+                      </div>
+              
+
+                      </div>
+                  <div class="modal-footer" id="UserTypeModalFooter">
+                      <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-info ">Save</button>
+
+                  </div>
+            </form>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- ----------------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+<!-- User Modal                                         -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+<div id="UserModal" class="modal fade show " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-modal="true" aria-hidden="true" style="color: black;">
+    <div class="modal-dialog" id="UserModalDialog">
+        <div class="modal-content" id="UserModalContent">
+           
+            <form name="userForm" enctype="multipart/form-data" id="userForm">
+              @csrf
+               <span class='arrow'>
+              <label class='error'></label>
+              </span>
+                  <div class="modal-header">
+                      <h4 class="modal-title" id="UserModalLabel"></h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="" id="UserModalData">
+
+
+                      <input type="hidden" id="user_id" name="user_id">
+
+                        
+                        <div class="form-group">
+                          <input type="text" id="user_name" name="user_name" class="form-control" placeholder="Enter User Name">
+                        </div>
+                        <div class="form-group">
+                          <input type="email" id="user_email" name="user_email" class="form-control" placeholder="Enter User Email">
+                        </div>
+
+                        <div class="form-group">
+                          <select name="user_type" id="user_type" class="form-control">
+                            <option value="">Select User Type</option>
+                          </select>
+                        </div>
+
+
+
+                                
+                      </div>
+              
+
+                      </div>
+                  <div class="modal-footer" id="UserModalFooter">
+                      <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-info ">Save</button>
+
+                  </div>
+            </form>
+
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- ----------------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+
+
 <script type="text/javascript">
     
     $(function() {
@@ -371,7 +499,212 @@
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------
 
+ $(function() {
+        $("form[name='userTypeForm']").validate({
+             errorPlacement: function(label, element) {
+        label.addClass('arrow');
+        label.css({"color": "red", "font-size": "12px" ,"width":"100%"});
+        label.insertAfter(element);
+    },
+    wrapper: 'span',
 
+    rules: {
+      user_type_name: {
+        required: true,
+      },
+    },
+    messages: {
+      user_type_name: {
+        required: "Please Provide a User Type Name",
+      },
+     
+    },
+    submitHandler: function(form) {
+
+        let myForm = document.getElementById('userTypeForm');
+        let formData = new FormData(myForm);
+
+         $.ajax({
+        type: "POST",
+        url: "{{ config('app.url')}}add-update-user-type",
+        enctype: 'multipart/form-data',
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function(){
+                            $('#UserTypeModal').modal('hide');
+                        },
+        success: function(data) {
+           
+
+            get_status = data['status'];
+            get_msg    = data['msg'];
+
+                            if (get_status == "0") 
+                            {
+
+                             document.getElementById('toast').style.visibility = "visible";
+                                document.getElementById('toast').className = "alert alert-danger alert-rounded fadeIn animated";
+                                document.getElementById('toastMsg').innerHTML = get_msg;
+
+
+                                 setTimeout(function() {
+                             document.getElementById('toast').style.visibility = "hidden";
+                                
+
+                            }, 5000);
+
+                            }
+                            else
+                            {
+                                document.getElementById('toast').style.visibility = "visible";
+                                document.getElementById('toast').className = "alert alert-success alert-rounded fadeIn animated";
+                                document.getElementById('toastMsg').innerHTML = get_msg;
+
+
+                                 setTimeout(function() {
+                             document.getElementById('toast').style.visibility = "hidden";
+
+                            }, 5000);
+
+
+                            }
+
+
+        $.ajax({
+        type: "GET",
+        url: "{{ config('app.url')}}get-user-type-list-AJAX",
+        success: function(data) {
+
+            $('#usertypeTBody').html(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('Exception:' + errorThrown);
+        }
+    });
+
+    }
+  });
+
+    }
+  });
+  });
+
+    //-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+
+
+
+
+ $(function() {
+        $("form[name='userForm']").validate({
+             errorPlacement: function(label, element) {
+        label.addClass('arrow');
+        label.css({"color": "red", "font-size": "12px" ,"width":"100%"});
+        label.insertAfter(element);
+    },
+    wrapper: 'span',
+
+    rules: {
+      user_name: {
+        required: true,
+      },
+      user_email: {
+        required: true,
+      },
+      user_type: {
+        required: true,
+      },
+    },
+    messages: {
+      user_name: {
+        required: "Please Provide a User Name",
+      },
+       user_email: {
+        required: "Please Provide a User Email",
+      },
+
+   user_type: {
+        required: "Please Select a User Type",
+      },     
+    },
+    submitHandler: function(form) {
+
+        let myForm = document.getElementById('userForm');
+        let formData = new FormData(myForm);
+
+         $.ajax({
+        type: "POST",
+        url: "{{ config('app.url')}}add-update-user",
+        enctype: 'multipart/form-data',
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function(){
+                            $('#UserModal').modal('hide');
+                        },
+        success: function(data) {
+           
+
+            get_status = data['status'];
+            get_msg    = data['msg'];
+
+                            if (get_status == "0") 
+                            {
+
+                             document.getElementById('toast').style.visibility = "visible";
+                                document.getElementById('toast').className = "alert alert-danger alert-rounded fadeIn animated";
+                                document.getElementById('toastMsg').innerHTML = get_msg;
+
+
+                                 setTimeout(function() {
+                             document.getElementById('toast').style.visibility = "hidden";
+                                
+
+                            }, 5000);
+
+                            }
+                            else
+                            {
+                                document.getElementById('toast').style.visibility = "visible";
+                                document.getElementById('toast').className = "alert alert-success alert-rounded fadeIn animated";
+                                document.getElementById('toastMsg').innerHTML = get_msg;
+
+
+                                 setTimeout(function() {
+                             document.getElementById('toast').style.visibility = "hidden";
+
+                            }, 5000);
+
+
+                            }
+
+
+        $.ajax({
+        type: "GET",
+        url: "{{ config('app.url')}}get-user-list-AJAX",
+        success: function(data) {
+
+            $('#userTBody').html(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert('Exception:' + errorThrown);
+        }
+    });
+
+    }
+  });
+
+    }
+  });
+  });
+
+
+
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
 
 var product_loadFile = function(event) {

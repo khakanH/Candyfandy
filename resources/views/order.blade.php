@@ -8,6 +8,25 @@
                  <div class="card" >
                             <div class="card-body">
                                 <h4 class="card-title">Orders</h4>
+
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="input-group">
+                                       <input type="text" name="order_search_text" placeholder="Enter Order Number" class="form-control" onfocusout="SearchOrder(this.value)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-info" type="button"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                            <div id="orderSearchDiv" class="mt-4 mb-1">
+                              
+                            </div>
+
+                            <div id="OrderListDiv">
+                                  
+
                                 <ul class="nav nav-pills mt-4 mb-1">
                                     <li class=" nav-item"> <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">New Orders</a> </li>
                                     <li class="nav-item"> <a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" onclick="GetAcceptedOrder()">Accepted Orders</a> </li>
@@ -212,6 +231,7 @@
                                 </div>
                                
                             </div>
+                          </div>
                         </div>
 
 </div>
@@ -357,4 +377,35 @@
                 });
     }
 
+    function SearchOrder(val)
+    {
+      var val = val.trim();
+      
+      if (!val) 
+      {
+        document.getElementById("orderSearchDiv").innerHTML = "";
+        document.getElementById("OrderListDiv").style.display= "block";
+        return;
+      }
+      else
+      {
+        document.getElementById("OrderListDiv").style.display= "none";
+        $.ajax({
+                  type: "GET",
+                  url: "{{ config('app.url')}}search-order/"+val,
+                  beforeSend: function(){
+                  
+                        $('#orderSearchDiv').html('<center><div class="spinner-grow text-dark" role="status"><span class="sr-only">Loading...</span></div></center>');
+                        
+                  },
+                  success: function(data) {
+                       $('#orderSearchDiv').html(data);
+                  },
+                  error: function(jqXHR, textStatus, errorThrown) {
+                      alert('Exception:' + errorThrown);
+                  }
+                });
+      }
+      
+    }
 </script>

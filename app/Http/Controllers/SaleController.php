@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Orders;
 
 use DB;
 
@@ -19,12 +20,22 @@ class SaleController extends Controller
 
 
     public function Index(Request $request)
-    {	
-        $user_id = session("login.user_id");
+    {	 
+        try 
+        {
+            $user_id = session("login.user_id");
 
-        $user_info = $this->checkUserAvailbility($user_id,$request);
+            $user_info = $this->checkUserAvailbility($user_id,$request);
 
-        return view('dashboard');
+            $sales = Orders::where('order_status',4)->orderBy('created_at','desc')->get();
+
+
+            return view('sale',compact('sales'));
+        } 
+        catch (Exception $e) 
+        {
+            return response()->json($e,500);
+        }
     }
 
 
