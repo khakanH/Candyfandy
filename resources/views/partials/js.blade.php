@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
     
     <!-- Bootstrap tether Core JavaScript -->
-    <!-- <script src="../../assets/libs/popper.js/dist/umd/popper.min.js"></script> -->
+    <script src="{{asset('assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
     <script src="{{asset('assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     <!-- apps -->
     <script src="{{asset('dist/js/app.min.js')}}"></script>
@@ -50,4 +50,27 @@
                     ]
                 } );
     } );
+
+
+
+             $( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
+
+
+            if (jqxhr.status == 401) 
+            {
+                alert("Session expired. You'll be take to the login page");
+                location.href = "{{ config('app.url')}}"; 
+            }
+            else if(jqxhr.status == 403)
+            {
+                alert("Sorry, You're not allowed to visit requested page. Taking you to Dashboard Page.");
+                location.href = "{{ config('app.url')}}";
+            }
+            else
+            {
+                alert("Something Went Wrong");
+            }
+    
+
+    });
     </script>

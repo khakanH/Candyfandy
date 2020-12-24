@@ -10,4 +10,7 @@ class Admin extends Model
     use HasFactory;
     protected $table = "admin";
     
+     public function user_type_name(){
+        return $this->hasOne('App\Models\UserType','id','user_type');
+    }
 }

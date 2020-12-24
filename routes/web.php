@@ -8,6 +8,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 
+
+use App\Models\UserRole;
+use App\Models\Modules;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,9 +22,25 @@ use App\Http\Controllers\UserController;
 |
 */
 
+
+
+Route::get('/MB-Script',function(){
+
+	$modules = Modules::get();
+	foreach ($modules as $key) 
+	{
+		UserRole::insert(array(
+				'user_type'	=> 0,
+				'module_id'		=> $key['id'],
+		));
+	}
+});
+
+
+
 Route::get('/', function () {
     return view('signin');
-})->name('index');
+})->name('index')->middleware('CheckLogin');
 
 
 Route::post('signin', [AccountController::class, 'Sigin'])->name('signin');
@@ -30,7 +49,8 @@ Route::get('signout', [AccountController::class, 'SignOut'])->name('signout');
 
 
 
-
+Route::middleware(['LoginSession','CheckUserRole'])->group(function () 
+{	
 
 Route::get('dashboard',[DashboardController::class, 'Index'])->name('dashboard');
 
@@ -77,9 +97,15 @@ Route::get('sale',[SaleController::class, 'Index'])->name('sale');
 Route::get('user',[UserController::class, 'Index'])->name('user');
 Route::post('add-update-user',[UserController::class, 'AddUpdateUser'])->name('add-update-user');
 Route::get('get-user-type-name-list/{type}',[UserController::class, 'UserTypeNameList'])->name('get-user-type-name-list');
-
-
+Route::get('get-user-list-AJAX',[UserController::class, 'UserListAJAX'])->name('get-user-list-AJAX');
+Route::get('delete-user/{id}',[UserController::class, 'DeleteUser'])->name('delete-user');
+Route::get('block-unblock-user/{id}',[UserController::class, 'BlockUnblockUser'])->name('block-unblock-user');
 Route::get('user-type',[UserController::class, 'UserType'])->name('user-type');
 Route::get('delete-user-type/{id}',[UserController::class, 'DeleteUserType'])->name('delete-user-type');
 Route::post('add-update-user-type',[UserController::class, 'AddUpdateUserType'])->name('add-update-user-type');
 Route::get('get-user-type-list-AJAX',[UserController::class, 'UserTypeListAJAX'])->name('get-user-type-list-AJAX');
+Route::get('user-roles',[UserController::class, 'UserRoles'])->name('user-roles');
+Route::post('save-roles',[UserController::class,'SaveRoles'])->name('save-roles');
+Route::get('get-user-roles-AJAX/{id}',[UserController::class,'UserRolesAJAX'])->name('get-user-roles-AJAX');
+
+});

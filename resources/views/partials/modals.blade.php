@@ -1,3 +1,10 @@
+
+<div id="LoadingModal" class="modal" data-backdrop="false" data-keyboard="true" style="height: 1%; background: rgba(0,0,0,0.6);">
+          <center><img style="width: 200%;" src="<?php echo config('app.img_url') ?>loading_bar.gif" width="100%" height="20"></center>
+</div>
+
+
+
 <div class="" id="toast" style="visibility: hidden; position: fixed; bottom: 5px; left: 30px; z-index: 999999999; font-size: 15px;">
                                         <p id="toastMsg" style="float: left;"></p> 
                                             <button type="button" class="close" onclick="hideToast('toast')" aria-label="Close" style="float: right;"> &nbsp;&nbsp;&nbsp;<span aria-hidden="true">×</span> </button>
@@ -238,13 +245,16 @@
 
                         
                         <div class="form-group">
+                          <label>Name:</label>
                           <input type="text" id="user_name" name="user_name" class="form-control" placeholder="Enter User Name">
                         </div>
                         <div class="form-group">
+                          <label>Email:</label>
                           <input type="email" id="user_email" name="user_email" class="form-control" placeholder="Enter User Email">
                         </div>
 
                         <div class="form-group">
+                          <label>User Type:</label>
                           <select name="user_type" id="user_type" class="form-control">
                             <option value="">Select User Type</option>
                           </select>
@@ -625,7 +635,7 @@
         required: "Please Provide a User Email",
       },
 
-   user_type: {
+        user_type: {
         required: "Please Select a User Type",
       },     
     },

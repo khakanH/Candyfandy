@@ -5,7 +5,15 @@
                
 <div class="page-wrapper">
 <div class="page-content container-fluid">
-               
+                 <center>
+                        @if(session('success'))
+                        <p class="text-success pulse animated">{{ session('success') }}</p>
+                        {{ session()->forget('success') }}
+                        @elseif(session('failed'))
+                        <p class="text-danger pulse animated">{{ session('failed') }}</p>
+                        {{ session()->forget('failed') }}
+                        @endif
+                        </center>
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Users Type
@@ -30,7 +38,7 @@
                                         </thead>
                                         <tbody id="usertypeTBody">
                                            @foreach($user_type as $key)
-                                            <tr id="cate{{$key['id']}}">
+                                            <tr id="usertype{{$key['id']}}">
                                                 <td  class="text-center">{{$loop->iteration}}</td>
                                                 <td>{{$key['name']}}</td>
                                                 
@@ -114,7 +122,7 @@
                                 }
                                 else
                                 {
-                                    document.getElementById("cate"+id).style.display="none";
+                                    document.getElementById("usertype"+id).style.display="none";
                                     document.getElementById('toast').style.visibility = "visible";
                                     document.getElementById('toast').className = "alert alert-success alert-rounded fadeIn animated";
                                     document.getElementById('toastMsg').innerHTML =  get_msg;
